@@ -1,0 +1,480 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+/* GLOBAL DEĞİŞKENLER */
+* {
+    font-family: "Nunito", sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --brown: #cc8a37;
+    --brown-2:#441b11;
+    --white: #f8eded;
+}
+
+body {
+    min-height: 100vh;
+    overflow-x: hidden;
+    /* Yatay taşmayı gizle */
+    background-color: var(--brown);
+    position: relative; /* 'absolute' için referans */
+}
+
+/*=========================BODY'NİN KENARINI KIVIRMA=========================================*/
+
+/* Üçgeni oluşturma */
+body::after {
+    position: absolute;
+    content: '';
+    right: 0;
+    top: 0;
+    transition-duration: 2s; /* 2 saniyelik animasyon süresi */
+    border-bottom: 0 solid var(--brown-2); /* Başlangıçta görünmez */
+    border-right: 0 solid var(--brown); /* Başlangıçta görünmez */
+    z-index: 1; /* Navbar'ın üstünde olacak */
+}
+
+body.opened::after {
+    border-bottom: 350px solid var(--brown-2); /* Koyu kahverengi üçgen */
+    border-right: 350px solid var(--brown); /* Açık kahverengi üçgen */
+    box-shadow: 
+        0 4px 20px rgba(0, 0, 0, 0.6), /* Alt gölge */
+        4px 0 20px rgba(0, 0, 0, 0.6), /* Sağ gölge */
+        -4px 0 20px rgba(0, 0, 0, 0.6), /* Sol gölge */
+        4px 0 20px rgba(0, 0, 0, 0.6); /* Sağ kenara gölge */
+    z-index: 2; /* Üçgen, navbar'ın üstünde olur */
+}
+
+/* Navbar'ı üçgenin üstüne yerleştirme */
+.triangle-navbar {
+    position: absolute;
+    top: -70px; /* Üçgenle hizalı */
+    right: -30px;
+    width: 250px;
+    height: 350px; /* Üçgenin boyuna göre */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: transparent; /* Arkaplan transparan */
+    z-index: 3; /* Üçgenin üstünde olacak */
+    opacity: 0; /* Başlangıçta görünmez */
+    transition: opacity 0.5s ease-in-out;
+    pointer-events: none; /* Tıklanamaz, sadece görünür olur */
+}
+
+/* Navbar içindeki öğeler */
+.triangle-navbar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    text-align: left;
+}
+
+.triangle-navbar ul li {
+    margin: 10px 0;
+}
+
+.triangle-navbar ul li i{
+    margin-right: 10px;
+    font-size: 20px;
+    color: var(--brown-2);
+}
+
+.triangle-navbar ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 20px;
+    color: var(--brown-2);
+    font-weight: bold;
+}
+
+/* Body "opened" olduğunda navbar'ı göster */
+body.opened .triangle-navbar {
+    opacity: 1; /* Navbar görünür */
+    transition-delay: 1s; /* Üçgen açıldıktan sonra görünsün */
+    pointer-events: auto; /* Tıklanabilir olur */
+}
+
+
+/*=========================================================*/
+
+.banner {
+    position: relative;
+    width: 100%;
+    height: 200px;
+}
+
+.banner img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.banner .header{
+    margin-top: 0;
+    background-color: var(--white);
+    width: 100%;
+    height: 80px;
+    display: flex;
+    position: relative; /* Absolute positioning için */
+    align-items: center; /* Dikey hizalama */
+}
+
+.banner #toggleButton {
+    position: absolute; /* Fotoğrafın sağ üstüne yerleşmesini sağlar */
+    right: 10px; /* Sağdan mesafe */
+    top: 10px; /* Üstten mesafe */
+    padding: 10px 20px;
+    font-size: 20px;
+    background-color: var(--brown);
+    border: 2px solid var(--brown-2);
+    border-radius: 20px;
+    color: var(--brown-2);
+    cursor: pointer;
+    font-weight: bold;
+    z-index: 10; /* Fotoğrafın üzerinde görünmesi için */
+    transition: all 2s ease;
+}
+
+/* Üçgen açıldığında butonun konumu */
+body.opened #toggleButton {
+    position: absolute;
+    right: 270px; /* Üçgenin kenarında görünecek */
+    top: 280px; /* Üçgenin boyutuna göre hizalanacak */
+    background-color: var(--brown-2); /* Butonun rengi değişebilir istersen */
+    border-color: var(--brown);
+    color: white; /* Yazı rengi de değişebilir */
+    z-index: 5; /* Üçgenin üzerinde görünmesi için */
+}
+
+.banner .header h2{
+    font-weight: 700;
+    font-size: 30px;
+    color: var(--brown-2);
+    margin: 0; /* Fazla boşlukları kaldırır */
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%); /* Yatay ortalama */
+}
+
+/*==================================KATEGORİLER============================*/
+
+.container {
+    margin-top: 100px;
+    display: flex;
+    gap: 20px; /* Aradaki boşluğu ayarlamak için */
+    flex-wrap: wrap; /* Ekran boyutuna göre kartların alt satıra geçmesini sağlar */
+    justify-content: center;
+}
+
+.card {
+    background: var(--white);
+    border-radius: 20px;
+    box-shadow: 0 7px 25px rgb(0, 0, 0, 0.3);
+    overflow: hidden;
+    width: calc(30% - 20px); /* Kart genişliği, aradaki boşluğu da hesaba katarak */
+    text-align: center;
+    padding: 15px;
+    padding-bottom: 5px;
+    box-sizing: border-box;
+}
+
+.card-title img {
+    width: 100%; /* Resmin genişliği kapsayıcının genişliğine uyar */
+    height: 200px; /* Resmin yüksekliği belirlenir */
+    object-fit: cover; /* Resmin kapsayıcıya uyumunu sağlar ve bozulmadan uygun şekilde gösterir */
+    border-radius: 20px; /* Resmin köşelerini yuvarlar */
+}
+
+.category {
+    font-size: 20px;
+    margin: 10px 0;
+    color: var(--white);
+    padding: 10px 20px;
+    background-color: var(--brown-2);
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.4s, color 0.4s; /* Geçiş efektleri için */
+}
+
+.category a {
+    text-decoration: none;
+    color: var(--white);
+    transition: color 0.3s; /* Geçiş efekti için */
+}
+
+.category:hover {
+    background-color: var(--brown); /* Hover durumunda arka plan rengini değiştirin */
+}
+
+.category:hover a {
+    color: var(--brown-2); /* Hover durumunda link rengini değiştirin */
+}
+
+/*====================================MENÜLER==================================*/
+.container-menu {
+    margin-top: 100px;
+    display: flex;
+    gap: 20px; /* Kartlar arasındaki boşluğu ayarlar */
+    flex-wrap: wrap; /* Ekran boyutuna göre kartların alt satıra geçmesini sağlar */
+    justify-content: center; /* Kartları ortalar */
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.container-menu a {
+    background: var(--white);
+    color: var(--brown-2);
+    border-radius: 20px;
+    box-shadow: 0 7px 25px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    width: calc(80% - 20px); /* Kart genişliği, aradaki boşluğu da hesaba katarak */
+    height: 90px;
+    display: flex; /* Flexbox düzeni için */
+    align-items: center; /* Dikeyde ortalama */
+    padding: 15px;
+    box-sizing: border-box;
+    text-decoration: none; /* Linkin altını çizme */
+    transition: background-color 0.4s, box-shadow 0.4s; /* Hover durumunda arka plan ve gölge efektleri */
+    justify-content: space-between; /* İçindeki elemanlar arasında boşluğu eşit dağıtma */
+}
+
+.container-menu a:hover {
+    background-color: var(--brown-2); /* Hover durumunda arka plan rengini değiştirir */
+    color: var(--white);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); /* Hover durumunda gölge efektini artırır */
+}
+
+.menu-title {
+    display: flex; /* İçindeki elemanları yan yana düzenler */
+    align-items: center; /* Dikeyde ortalama */
+    flex-grow: 1; /* İçeriğin genişliğinin otomatik ayarlanmasını sağlar ve ikonun sağda kalmasını sağlar */
+}
+
+.menu-title img {
+    width: 70px; /* Resim genişliği, ihtiyaca göre ayarlanabilir */
+    height: 70px; /* Resim yüksekliği, ihtiyaca göre ayarlanabilir */
+    border-radius: 50%; /* Yuvarlak resim */
+    object-fit: cover; /* Resmin doğru şekilde sığmasını sağlar */
+    margin-right: 10px; /* Resim ile başlık arasına boşluk ekler */
+    border: 3px solid var(--brown);
+}
+
+.menu-title h2 {
+    margin: 0; /* Başlık etrafındaki varsayılan boşluğu kaldırır */
+    font-size: 18px; /* Başlık yazı boyutu */
+    color: var(--black); /* Başlık rengi, ihtiyaca göre ayarlanabilir */
+}
+
+.iconBox {
+    font-size: 24px; /* İkon boyutu */
+    color: var(--black); /* İkon rengi, ihtiyaca göre ayarlanabilir */
+    margin-right: 30px;
+}
+
+/*=====================================POP-UP================================*/
+
+/* Pop-up arka planı */
+.popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Pop-up içeriği */
+.popup-content {
+    background: var(--brown-2);
+    padding: 25px;
+    border-radius: 8px;
+    position: relative;
+    width: 500px;
+    max-width: 90%;
+    transform: translateY(-50px); /* Başlangıçta yukarıda */
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Pop-up içeriği görünür durumda */
+.popup-content.show {
+    transform: translateY(0); /* Aşağıya kayma */
+    opacity: 1;
+}
+
+/* Pop-up içeriği gizlenmiş durumda */
+.popup-content.hide {
+    transform: translateY(-50px); /* Yukarıya kayma */
+    opacity: 0;
+}
+
+/* Kapama butonu */
+.close-btn {
+    position: absolute;
+    top: 2px;
+    right: 8px;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--brown);
+}
+
+/* Resim stili */
+.popup-body img {
+    width: 100%;
+    height: auto;
+    max-width: 100%; /* Genişliği kapsayıcıya göre ayarla */
+    max-height: 300px; /* Belirli bir yüksekliğe sınır koy */
+    object-fit: cover; /* Orantılı sığdır */
+    border-radius: 5px;
+    border: 4px solid var(--brown);
+}
+
+/* Başlık ve metinler */
+.popup-body h2 {
+    text-align: center;
+    margin-top: 10px;
+    color: var(--brown);
+}
+
+.popup-body h3 {
+    color: var(--white);
+    margin-top: 5px;
+}
+
+.popup-body hr {
+    margin-top: 10px;
+    border: none;
+    height: 1px;
+    background-color: var(--brown);
+}
+
+/* Fiyat ve diğer bilgiler */
+.popup-body .price {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 20px;
+    background-color: var(--brown);
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.popup-body .price p {
+    color: var(--white);
+    font-size: 18px;
+}
+
+.popup-body .price h4 {
+    font-size: 20px;
+    color: var(--brown-2);
+}
+
+/* IconBox stilini ekleyin */
+.iconBox {
+    cursor: pointer;
+}
+/*======================================================================================*/
+
+/*====================================================================================*/
+
+footer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    margin: 50px;
+}
+
+@media (max-width: 768px) {
+
+    body.opened::after {
+        border-bottom: 200px solid var(--brown-2); /* Görünür olduğunda koyu gri kenar */
+        border-right: 235px solid var(--brown); /* Görünür olduğunda mavi kenar */
+    }
+    
+    .triangle-navbar{
+        top: 5px;
+        right: 10px;
+        width: auto;
+        height: auto;
+        line-height: 5px;
+    }
+
+    .triangle-navbar ul li i,
+    .triangle-navbar ul li a{
+        font-size: 13px;
+    }
+
+    .banner .header {
+        height: 70px;
+    }
+
+    .banner #tooglebutton{
+        padding: 2px 8px;
+        font-size: 15px;
+        border-radius: 10px;
+        border: 1px solid var(--brown-2);
+        left: 10px;
+    }
+
+    body.opened #toggleButton {
+        right: 160px; /* Üçgenin kenarında görünecek */
+        top: 140px; /* Üçgenin boyutuna göre hizalanacak */
+    }
+
+    .banner .header h2{
+        font-size: 20px;
+    }
+
+    .container{
+        margin-top: 100px;
+    }
+
+    .card {
+        width: calc(40% - 5px); /* Ekran küçüldüğünde iki kartın yan yana olması için genişlik ayarı */
+        margin-bottom: 20px; /* Kartlar arasında dikey boşluk */
+        padding: 8px;
+        padding-bottom: 1px;
+    }
+
+    .card-title img {
+        width: 100%; /* Resmin genişliği kapsayıcının genişliğine uyar */
+        height: 120px; /* Resmin yüksekliği belirlenir */
+        object-fit: cover; /* Resmin kapsayıcıya uyumunu sağlar ve bozulmadan uygun şekilde gösterir */
+        border-radius: 20px; /* Resmin köşelerini yuvarlar */
+    }
+
+    .card .category{
+        font-size: 18px;
+        padding: 10px 10px;
+        border-radius: 15px;
+        margin-top: 3px;
+    }
+
+    .container-menu .iconBox{
+        margin-right: 10px;
+    }
+
+    .popup-body h3{
+        margin-top: 20px;
+    }
+
+    .popup-body hr{
+        margin-top: 20px;
+    }
+
+    footer{
+        font-size: 12px;
+        align-items: center;
+        justify-content: center;
+    }
+}
